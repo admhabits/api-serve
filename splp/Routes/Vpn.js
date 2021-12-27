@@ -127,9 +127,9 @@ router.post('/create/unique', createBodyRequest, async (req, res, next) => {
                 })
             } else {
                 var query;
-                  var query1 = `INSERT INTO vpn (vpnName, ipVpnServer, domainVpnServer, vpnType, credentialType, username, password, userid) VALUES ('${vpnName}', '${ipVpnServer}', '${domainVpnServer}',' ${vpnType}', '${credentialType}', '${username}', '${md5(password)}', '${userid}')`;
-                  var query2 = `INSERT INTO vpn (vpnName, ipVpnServer, domainVpnServer, vpnType, credentialType, username, password, groupName, groupPassword, userid) VALUES ('${vpnName}', '${ipVpnServer}', '${domainVpnServer}', '${vpnType}', '${credentialType}', '${username}', '${md5(password)}', '${groupName}', '${md5(groupPassword)}', '${userid}')`;
-                  var query3 = `INSERT INTO vpn (vpnName, ipVpnServer, domainVpnServer, vpnType, credentialType, userCertificate, serverCertificate, userid) VALUES ('${vpnName}', '${ipVpnServer}', '${domainVpnServer}', '${vpnType}', '${credentialType}', '${null}', '${null}', '${userid}')`;
+                var query1 = `INSERT INTO vpn (vpnName, ipVpnServer, domainVpnServer, vpnType, credentialType, username, password, userid) VALUES ('${vpnName}', '${ipVpnServer}', '${domainVpnServer}',' ${vpnType}', '${credentialType}', '${username}', '${md5(password)}', '${userid}')`;
+                var query2 = `INSERT INTO vpn (vpnName, ipVpnServer, domainVpnServer, vpnType, credentialType, username, password, groupName, groupPassword, userid) VALUES ('${vpnName}', '${ipVpnServer}', '${domainVpnServer}', '${vpnType}', '${credentialType}', '${username}', '${md5(password)}', '${groupName}', '${md5(groupPassword)}', '${userid}')`;
+                var query3 = `INSERT INTO vpn (vpnName, ipVpnServer, domainVpnServer, vpnType, credentialType, userCertificate, serverCertificate, userid) VALUES ('${vpnName}', '${ipVpnServer}', '${domainVpnServer}', '${vpnType}', '${credentialType}', '${null}', '${null}', '${userid}')`;
 
                 if (!groupName && !groupPassword && vpnType == 2) {
                     console.log('Body request groupName && groupPassword can not be empty!');
@@ -203,13 +203,9 @@ router.post('/create/one', createBodyRequest, async (req, res, next) => {
         console.log(`Berikut nilai body yang dikirim untuk membuat vpn ${credentialType} : \n`);
         console.table([{ vpnName, ipVpnServer, domainVpnServer, vpnType, credentialType, username, password, userid }]);
 
-        con.query(`SELECT * FROM vpn WHERE userid = '${userid}'`, (err, rows) => {
+        con.query(`SELECT userid FROM users WHERE userid = '${userid}'`, (err, rows) => {
             if (err) throw err;
-            if (rows.length === 0) {
-                res.status(400).send({
-                    message: 'Tidak ditemukan userid yang cocok!'
-                })
-            } else {
+            if (rows.length !== 0) {
                 var query = `INSERT INTO vpn (vpnName, ipVpnServer, domainVpnServer, vpnType, credentialType, username, password, userid) VALUES ('${vpnName}', '${ipVpnServer}', '${domainVpnServer}',' ${vpnType}', '${credentialType}', '${username}', '${md5(password)}', '${userid}')`;
                 if (vpnType == 1 && credentialType == 'basic') {
                     buatVpnService(query);
@@ -219,6 +215,11 @@ router.post('/create/one', createBodyRequest, async (req, res, next) => {
                         status: false
                     })
                 }
+
+            } else {
+                res.status(404).send({
+                    message: 'Tidak ditemukan userid yang cocok!'
+                })
             }
         })
 
@@ -265,23 +266,24 @@ router.post('/create/two', createBodyRequest, async (req, res, next) => {
         console.log(`Berikut nilai body yang dikirim untuk membuat vpn ${credentialType} : \n`);
         console.table([{ vpnName, ipVpnServer, domainVpnServer, vpnType, credentialType, username, password, groupName, groupPassword, userid }]);
 
-        con.query(`SELECT * FROM vpn WHERE userid = '${userid}'`, (err, rows) => {
+        con.query(`SELECT userid FROM users WHERE userid = '${userid}'`, (err, rows) => {
             if (err) throw err;
-            if (rows.length === 0) {
-                res.status(400).send({
-                    message: 'Tidak ditemukan userid yang cocok!'
-                })
-            } else {
-                   var query = `INSERT INTO vpn (vpnName, ipVpnServer, domainVpnServer, vpnType, credentialType, username, password, groupName, groupPassword, userid) VALUES ('${vpnName}', '${ipVpnServer}', '${domainVpnServer}', '${vpnType}', '${credentialType}', '${username}', '${md5(password)}', '${groupName}', '${md5(groupPassword)}', '${userid}')`;
+            if (rows.length !== 0) {
+                var query = `INSERT INTO vpn (vpnName, ipVpnServer, domainVpnServer, vpnType, credentialType, username, password, groupName, groupPassword, userid) VALUES ('${vpnName}', '${ipVpnServer}', '${domainVpnServer}', '${vpnType}', '${credentialType}', '${username}', '${md5(password)}', '${groupName}', '${md5(groupPassword)}', '${userid}')`;
 
                 if (vpnType == 2 && credentialType == 'group') {
                     buatVpnService(query);
                 } else if (vpnType != 2) {
-                    return res.status(500).json({
+                    return res.status(502).json({
                         message: 'Invalid vpnType or credentialType!',
                         status: false
                     })
                 }
+
+            } else {
+                res.status(404).send({
+                    message: 'Tidak ditemukan userid yang cocok!'
+                })
             }
         })
 
@@ -328,13 +330,9 @@ router.post('/create/three', createBodyRequest, async (req, res, next) => {
         console.log(`Berikut nilai body yang dikirim untuk membuat vpn ${credentialType} : \n`);
         console.table([{ vpnName, ipVpnServer, domainVpnServer, vpnType, credentialType, userCertificate, serverCertificate }]);
 
-        con.query(`SELECT * FROM vpn WHERE userid = '${userid}' AND credentialType = ${credentialType}'`, (err, rows) => {
+        con.query(`SELECT userid FROM users WHERE userid = '${userid}'`, (err, rows) => {
             if (err) throw err;
-            if (rows.length === 0) {
-                res.status(404).send({
-                    message: 'Tidak ditemukan userid yang cocok!'
-                })
-            } else {
+            if (rows.length !== 0) {
                 var query = `INSERT INTO vpn (vpnName, ipVpnServer, domainVpnServer, vpnType, credentialType, userCertificate, serverCertificate, userid) VALUES ('${vpnName}', '${ipVpnServer}', '${domainVpnServer}', '${vpnType}', '${credentialType}', '${userCertificate}', '${serverCertificate}', '${userid}')`;
 
                 if (vpnType == 3 && credentialType == 'certificate') {
@@ -345,6 +343,11 @@ router.post('/create/three', createBodyRequest, async (req, res, next) => {
                         status: false
                     })
                 }
+               
+            } else {
+                res.status(404).send({
+                    message: 'Tidak ditemukan userid yang cocok!'
+                })
             }
         })
 
@@ -566,7 +569,7 @@ router.post('/getvpnbyid', [], (req, res, next) => {
     }
 
 
-}) 
+})
 
 //GET VPN ALL
 router.post('/getvpns', getVpnBodyRequest, (req, res, next) => {

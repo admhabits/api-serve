@@ -1,8 +1,8 @@
 name: splp
 command: bash
-workdir: /okteto
+workdir: /app
 sync:
-  - .:/okteto
+  - .:/app
 forward:
   # - 8080:8080
   - 8181:8181
