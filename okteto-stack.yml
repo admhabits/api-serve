@@ -1,0 +1,47 @@
+name: api-services
+services:
+  mysql:
+    image: mysql:5.6
+    labels:
+      app: mysql
+    ports:
+      - 3306
+    resources:
+      storage: 1Gi
+    volumes:
+      - pvc-config-sql:/etc/mysql
+      - pvc-data-sql:/var/lib/mysql
+      - ./backup/db/:/data_backup/data
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=api_portal
+      - MYSQL_USER=alamwibowo
+      - MYSQL_PASSWORD=P@ssword1234
+  splp:
+    build: splp
+    ports:
+      - 8080
+    annotations:
+      dev.okteto.com/auto-ingress: "api"
+    labels:
+      app: splp
+    restart: unless-stopped
+    environment:
+    - DB_HOST=mysql
+    - DB_USER=alamwibowo
+    - DB_NAME=api_portal
+    - DB_PASS=P@ssword1234
+    - DB_PORT=3306
+    - NODE_PORT=8080
+    - NODE_ENV=development
+endpoints:
+  api:
+  # - path: /
+  #   service: frontend
+  #   port: 80
+  - path: /api
+    service: splp
+    port: 8080
+volumes: 
+  pvc-config-sql:
+  pvc-data-sql:

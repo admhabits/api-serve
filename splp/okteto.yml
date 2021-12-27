@@ -1,0 +1,8 @@
+name: nodejs
+command: bash
+workdir: /okteto
+sync:
+  - .:/okteto
+forward:
+  # - 8080:8080
+  - 8181:8181
