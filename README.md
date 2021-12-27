@@ -1,18 +1,14 @@
-## Polling App: React + Java Spring Boot (Maven) + MySQL
+## Api Services: React + Node JS (Express) + MySQL
 
-This example shows how to leverage [Okteto](https://github.com/okteto/okteto) to develop a React + Java Spring Boot (Maven) + MySQL Sample App directly on Okteto Cloud. The Sample App is deployed using a [kustomize](https://github.com/okteto/polling/blob/master/okteto-pipeline.yml). It creates the following components:
+This example shows how to leverage [Okteto](https://github.com/okteto/okteto) to develop a React + Node JS (Express)  + MySQL Sample App directly on Okteto Cloud. The Sample App is deployed using a [kustomize](https://github.com/okteto/polling/blob/master/okteto-pipeline.yml). It creates the following components:
 
 - A *React* based **frontend**.
-- A Java Spring Boot **api**.
+- A splp as **api**.
 - A [MySQL](https://www.mysql.com/) database.
-
-## Preview
-
-![App Screenshot](screenshot.png)
 
 ## Tutorial
 
-- Deploy the **Polling App** on your personal namespace by clicking on the following button:
+- Deploy the **Api Portal Services SPLP** on your personal namespace by clicking on the following button:
 
 <p align="center">
 <a href="https://cloud.okteto.com/deploy">
@@ -20,33 +16,19 @@ This example shows how to leverage [Okteto](https://github.com/okteto/okteto) to
 </a>
 </p>
 
-- To develop on the **frontend** component:
+
+- To develop on the **splp** component:
 
 ```
-    $ okteto up -f frontend/okteto.yml
+    $ okteto up -f splp/okteto.yml
       ✓  Development container activated
       ✓  Files synchronized
-         Namespace: githubid
-         Name:      frontend
-         Forward:   9229 -> 9229
-                    8080 -> 80
-
-    Welcome to your development environment. Happy coding!
-    githubid:frontend okteto> yarn install
-    githubid:frontend okteto> yarn start
-```
-
-- To develop on the **nodejs** component:
-
-```
-    $ okteto up -f nodejs/okteto.yml
-      ✓  Development container activated
-      ✓  Files synchronized
-         Namespace: githubid
+         Namespace: yournamespace
          Name:      api
-         Forward:   5005 -> 5005
+         Forward:   
                     8080 -> 8080
 
     Welcome to your development environment. Happy coding!
     githubid:nodejs okteto> npm run start:dev
+
 ```
