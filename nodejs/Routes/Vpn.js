@@ -544,7 +544,7 @@ router.post('/getvpnbyid', [], (req, res, next) => {
         });
     } else if (req.body.type == 'vpn') {
         const id = req.body.id;
-        con.query(`SELECT * FROM vpn WHERE id = '${id}' AND userid = '${userid}'`, (err, rows) => {
+        con.query(`SELECT * FROM vpn WHERE id = '${id}'`, (err, rows) => {
             if (err) throw err;
             if (rows.length !== 0) {
                 console.log(`HASIL DATA DARI ID : ${id}`);
@@ -571,6 +571,60 @@ router.post('/getvpnbyid', [], (req, res, next) => {
 
 })
 
+router.post('/deletevpn', [], (req, res, next) => {
+    var Token, decoded, userid;
+
+    /* === CHECK HEADERS AUTHORIZATION === */
+    if (req.headers.authorization) {
+        Token = extractToken(req);
+        decoded = jwt.decode(Token, { complete: true });
+        userid = decoded.payload.userid;
+    } else {
+        return res.status(500).send({
+            status: false,
+            message: 'Headers authorization is required!'
+        })
+    }
+
+    /* === CHECK BODY VALIDATION === */
+    const errors = validationResult(req);
+    console.log(`APAKAH ARRAY OBJECT ERROR KOSONG ? ${errors.isEmpty()}`, errors); // ;
+    const { type, id } = req.body;
+    console.table([{ type, id }])
+
+    if (!errors.isEmpty()) {
+        res.status(500).send({
+            errors: errors.array()
+        });
+    } else if (req.body.type == 'vpn') {
+        const id = req.body.id;
+        con.query(`SELECT * FROM vpn WHERE id = '${id}'`, (err, rows) => {
+            if (err) throw err;
+            if (rows.length !== 0) {
+                con.query(`DELETE from vpn WHERE id = '${id}'`, (error, result) => {
+                    if(error) throw error;
+                    return res.status(200).send({
+                        status: false,
+                        message: `Data dihapus ${id}!`,
+                        result
+                    })
+                })
+            } else {
+                return res.status(500).json({
+                    status: false,
+                    message: 'Tidak ditemukan data!',
+                })
+            }
+        })
+    } else {
+        return res.status(500).json({
+            status: false,
+            message: 'Invalid type body request!'
+        })
+    }
+
+
+})
 //GET VPN ALL
 router.post('/getvpns', getVpnBodyRequest, (req, res, next) => {
     var Token, decoded, userid;

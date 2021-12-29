@@ -1,4 +1,4 @@
-name: Myapps-Stack-Pipeline
+name: Stack-Services-Apps
 services:
   mysql:
     image: mysql:5.6

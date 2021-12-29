@@ -1,8 +1,7 @@
-name: splp
+name: nodejs
 command: bash
 workdir: /app
 sync:
   - .:/app
 forward:
-  # - 8080:8080
   - 8181:8181
