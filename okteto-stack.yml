@@ -47,12 +47,13 @@ services:
     - MYSQL_ROOT_PASSWORD=root
 endpoints:
   myapps:
-  - path: /admin
-    service: myadmin
-    port: 80
   - path: /api
     service: myapps
     port: 8080
+  myadmin:
+  - path: /
+    service: myadmin
+    port: 80
 volumes: 
   conf:
   data:
