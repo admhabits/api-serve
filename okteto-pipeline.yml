@@ -3,4 +3,4 @@ deploy:
   - okteto stack deploy --build --file okteto-stack.yml
 devs:
   - frontend/okteto.yml
-  - nodejs/okteto.yml
+  - splp/okteto.yml
