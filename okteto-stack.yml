@@ -1,6 +1,6 @@
-name: Stack-Services-Apps
+name: stack4apps
 services:
-  mysql:
+  mysqldb:
     image: mysql:5.6
     labels:
       app: myapps
@@ -9,8 +9,8 @@ services:
     resources:
       storage: 1Gi
     volumes:
-      - ConfSQL:/etc/mysql
-      - DataSQL:/var/lib/mysql
+      - conf:/etc/mysql
+      - data:/var/lib/mysql
       - ./backup/db/:/data_backup/data
     environment:
       - MYSQL_ROOT_PASSWORD=root
@@ -18,7 +18,7 @@ services:
       - MYSQL_USER=alamwibowo
       - MYSQL_PASSWORD=P@ssword1234
   myapps:
-    build: myapps
+    build: nodejs
     ports:
       - 8080
     labels:
@@ -32,7 +32,7 @@ services:
     - DB_PORT=3306
     - NODE_PORT=8080
     - NODE_ENV=development
-  phpmyadmin:
+  myadmin:
     image: phpmyadmin/phpmyadmin
     ports:
       - 80
@@ -48,11 +48,11 @@ services:
 endpoints:
   myapps:
   - path: /admin
-    service: phpmyadmin
+    service: myadmin
     port: 80
   - path: /api
     service: myapps
     port: 8080
 volumes: 
-  ConfSQL:
-  DataSQL:
+  conf:
+  data:
