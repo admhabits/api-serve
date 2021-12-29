@@ -51,7 +51,7 @@ endpoints:
     service: phpmyadmin
     port: 80
   - path: /api
-    service: splp
+    service: myapps
     port: 8080
 volumes: 
   ConfSQL:
