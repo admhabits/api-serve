@@ -40,7 +40,7 @@ services:
       app: myapps
     restart: unless-stopped
     environment:
-    - PMA_HOST=mysql
+    - PMA_HOST=mysqldb
     - PMA_PORT=3306
     - MYSQL_USER=alamwibowo
     - MYSQL_PASSWORD=P@ssword1234
