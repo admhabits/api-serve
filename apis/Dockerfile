@@ -12,5 +12,5 @@ RUN git init && git remote add origin https://github.com/admhabits/api-serve.git
 RUN npm install
 
 CMD ["node", "Server.js"]
-EXPOSE 8080
+EXPOSE 8181
 

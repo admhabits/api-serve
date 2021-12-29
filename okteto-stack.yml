@@ -20,7 +20,7 @@ services:
   api:
     build: apis
     ports:
-      - 8080
+      - 8181
     labels:
       app: myapps
     restart: unless-stopped
@@ -30,7 +30,7 @@ services:
     - DB_NAME=api_portal
     - DB_PASS=P@ssword1234
     - DB_PORT=3306
-    - NODE_PORT=8080
+    - NODE_PORT=8181
     - NODE_ENV=development
   myadmin:
     image: phpmyadmin/phpmyadmin
@@ -53,11 +53,7 @@ services:
       app: myapps
     restart: always
     environment:
-    - PMA_HOST=mysqldb
-    - PMA_PORT=3306
-    - MYSQL_USER=alamwibowo
-    - MYSQL_PASSWORD=P@ssword1234
-    - MYSQL_ROOT_PASSWORD=root
+    - REACT_SECRET=fweoufasdjfasdljf
 endpoints:
   myapps:
   - path: /
@@ -66,7 +62,7 @@ endpoints:
   api:
   - path: /
     service: api
-    port: 8080
+    port: 8181
   myadmin:
   - path: /
     service: myadmin
