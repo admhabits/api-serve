@@ -59,11 +59,12 @@ services:
     - MYSQL_PASSWORD=P@ssword1234
     - MYSQL_ROOT_PASSWORD=root
 endpoints:
-  api:
+  myapps:
   - path: /
     service: myapps
     port: 3000
-  - path: /api
+  api:
+  - path: /
     service: api
     port: 8080
   myadmin:
