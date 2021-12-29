@@ -25,7 +25,7 @@ services:
       app: myapps
     restart: unless-stopped
     environment:
-    - DB_HOST=mysql
+    - DB_HOST=mysqldb
     - DB_USER=alamwibowo
     - DB_NAME=api_portal
     - DB_PASS=P@ssword1234
